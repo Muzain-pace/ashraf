@@ -1,22 +1,141 @@
-<div class="container">
-  <form action="" method="post" #data = "ngForm"  (ngSubmit)="AddSem(data)">
-    <div>
+<body>
+  <!-- *ngIf="submitload" -->
+  <div *ngIf="submitload" >
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModalLong"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3
+            style="font-weight: bold"
+            class="modal-title"
+            id="exampleModalLabel"
+          >
+            SHEET MODEL
+          </h3>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3>SHEET 1</h3>
+          <img
+            src="../../assets/images/sheet1.png"
+            alt=""
+            style="width: 100%; position: relative"
+          />
+          &nbsp;
+          <h3>SHEET 2</h3>
+          <img
+            src="../../assets/images/sheet2.png"
+            alt=""
+            style="width: 100%; position: relative"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="help-icon">
+    <a data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="home"
+        title="Click to know more"
+      ></mat-icon>
+    </a>
+  </div>
+
+  <div class="tabClass">
+    <form action="" method="post" #data="ngForm" (ngSubmit)="AddSem(data)">
       <p-dropdown
+        autoWidth="false"
+        [style]="{ width: '100px' }"
         [options]="sem"
         [(ngModel)]="selectedSem"
         optionLabel="name"
         optionValue="code"
         name="sem"
       ></p-dropdown>
+      &nbsp;&nbsp;
+      <p-dropdown
+        autoWidth="false"
+        [style]="{ width: '100px' }"
+        [options]="sem"
+        [(ngModel)]="selectedSem"
+        optionLabel="name"
+        optionValue="code"
+        name="sem"
+      ></p-dropdown>
+      &nbsp;&nbsp;
+      <p-dropdown
+        autoWidth="false"
+        [style]="{ width: '100px' }"
+        [options]="sem"
+        [(ngModel)]="selectedSem"
+        optionLabel="name"
+        optionValue="code"
+        name="sem"
+      ></p-dropdown>
+      &nbsp;&nbsp;
+      <button pButton type="submit" label="Add" pRipple></button>
+    </form>
+    <p-toast key="duplicate"></p-toast>
+
+    <div class="tabClass" *ngIf="spinnerload">
+      <!-- <mat-spinner color="warn"></mat-spinner> -->
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
-    <button pButton type="submit" label="Add" pRipple> </button>
-  </form>
-</div>
-<p-toast></p-toast>
 
+    <!-- *ngIf="uploadFile" -->
+    <div style="margin-top: 6em;" *ngIf="uploadFile">
+      <p-fileUpload style="height:30vh" name="myfile[]" [customUpload]="true" (uploadHandler)="UploadFile($event)"></p-fileUpload>
+    </div>
+  </div>
+</body>
 
-<div class="container" *ngIf="uploadFile">
-    <input type="file"  class="container" (change) = "UploadFile($event)">
+<!-- *ngIf="viewresult" -->
+<!-- <div *ngIf="viewresult"> -->
+  <p-toast key="success-added" position="center">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column" style="flex: 1">
+            <div class="text-center">
+                <i class="pi pi-check" style="font-size: 3rem"></i>
+                <h4>{{message.summary}}</h4>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="grid p-fluid container">
+                <div class="col-6">
+                    <button type="button" pButton label="Yes" class="p-button-success" routerLink="/viewResult" routerLinkActive="active"></button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
 
-    
-</div>
+  <!-- <app-view-result></app-view-result> -->
+<!-- </div> -->

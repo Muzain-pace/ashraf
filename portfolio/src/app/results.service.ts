@@ -44,4 +44,18 @@ export class ResultsService {
     return  this.http.get<any>('http://localhost:3000/api/Subjectdetails');
   }
 
+
+  //get student wise topper
+  getTopper():Observable<any[]>{
+    return this.http.get<any>('http://localhost:3000/api/getStudentTopper');
+  }
+  //get subject wise topper
+  getSubTopper():Observable<any[]>{
+    return this.http.get<any>('http://localhost:3000/api/getSubjectTopper');
+  }
+  //get subject wise faile students
+  getSubFail():Observable<any[]>{
+    return this.http.get<any>('http://localhost:3000/api/subjectwisefailure');
+  }
+
 }

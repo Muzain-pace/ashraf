@@ -198,8 +198,7 @@ router.get('/getSubjectTopper', async (req, res) => {
             let markpersubObj = await MarksModel.find({ subId: _subID[i]._id }).sort({ totalMarksPerSubject: -1 });
             Data.push(markpersubObj[0]);
         }
-        res.status(200)
-        res.json(Data);
+        res.status(200).json(Data);
     }
     catch(error){
         res.status(500).json({message: error.message})

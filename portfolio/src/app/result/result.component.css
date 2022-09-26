@@ -1,0 +1,42 @@
+.tabClass{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 3rem;
+    height: 120;
+}
+.tabClass2{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 10rem;
+}
+.help-icon{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-end;
+    top: 3rem; 
+    right: 28rem; 
+}
+.help-icon:hover{
+    cursor:grab;
+}
+
+
+.example-card {
+    /* max-width: 400px; */
+  width: 700px;
+}
+  
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: rgba(147, 181, 243, 0.26);
+}
