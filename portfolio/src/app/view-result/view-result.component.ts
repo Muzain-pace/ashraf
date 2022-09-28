@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Scale } from 'chart.js';
 import { lastValueFrom } from 'rxjs';
@@ -11,14 +12,18 @@ let labels:any[]=[];
 let data1:any[]=[];
 let data2:any[]=[];
 
+import { Component, OnInit } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
+import { ResultsService } from '../results.service';
+
+
 @Component({
   selector: 'app-view-result',
   templateUrl: './view-result.component.html',
   styleUrls: ['./view-result.component.css']
 })
-
-
 export class ViewResultComponent implements OnInit {
+
 	options: any;
 	
   constructor(private ResultsService:ResultsService) {}
@@ -46,14 +51,19 @@ export class ViewResultComponent implements OnInit {
 	this.btnhidden = false;
     
 
+
+  constructor(private ResultsService:ResultsService) { }
+
   }
   TopperObj:any;
   SubjectTopperObj:any;
   SubjectFailObj:any;
   async ngOnInit(){
-    this.TopperObj = await lastValueFrom(this.ResultsService.getTopper());
-    this.SubjectTopperObj = await lastValueFrom(this.ResultsService.getSubTopper());
+    let semId = localStorage.getItem("semId");
+    this.TopperObj = await lastValueFrom(this.ResultsService.getTopper(semId));
+    this.SubjectTopperObj = await lastValueFrom(this.ResultsService.getSubTopper(semId));
     this.SubjectFailObj = await lastValueFrom(this.ResultsService.getSubFail());
+
 	console.log(this.TopperObj)
 	for(let i=0;i<this.TopperObj.length;i++){
 		labels.push(this.TopperObj[i].usn)
@@ -95,6 +105,9 @@ export class ViewResultComponent implements OnInit {
 
   }
   datas :any;
+
+
+  }
 
 }
   
