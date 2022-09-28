@@ -12,9 +12,9 @@ let labels:any[]=[];
 let data1:any[]=[];
 let data2:any[]=[];
 
-import { Component, OnInit } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
-import { ResultsService } from '../results.service';
+// import { Component, OnInit } from '@angular/core';
+// import { lastValueFrom } from 'rxjs';
+// import { ResultsService } from '../results.service';
 
 
 @Component({
@@ -51,8 +51,7 @@ export class ViewResultComponent implements OnInit {
 	this.btnhidden = false;
     
 
-
-  constructor(private ResultsService:ResultsService) { }
+//   constructor(private ResultsService:ResultsService) { }
 
   }
   TopperObj:any;
@@ -109,6 +108,6 @@ export class ViewResultComponent implements OnInit {
 
   }
 
-}
+
   
 

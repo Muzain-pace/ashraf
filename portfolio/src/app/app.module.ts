@@ -53,7 +53,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {MatPaginatorModule} from '@angular/material/paginator'; 
 import {MatTableModule} from '@angular/material/table'; 
-
+import {ChartModule} from 'primeng/chart';
 @NgModule({
   declarations: [
     AppComponent, 
@@ -95,7 +95,8 @@ import {MatTableModule} from '@angular/material/table';
     MatSelectModule,
     MatTabsModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    ChartModule
 
   ],
   providers: [MessageService],
