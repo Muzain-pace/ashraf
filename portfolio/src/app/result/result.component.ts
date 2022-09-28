@@ -9,7 +9,7 @@ import { ResultsService } from '../results.service';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
 import { AnimateTimings } from '@angular/animations';
-import { async, lastValueFrom, Subject } from 'rxjs';
+import { async, lastValueFrom, Observable, Subject } from 'rxjs';
 
 interface Sem {
   name: string;
@@ -41,7 +41,7 @@ export class ResultComponent implements OnInit {
       { name: 'V', code: 5 },
       { name: 'VI', code: 6 },
       { name: 'VII', code: 7 },
-      { name: 'VIII', code: 8 },
+      { name: 'VIII', code: 8 },   
     ];
   }
   selectedSem: number = 0;
@@ -60,7 +60,7 @@ export class ResultComponent implements OnInit {
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
 
-    fileReader.onload = (e) => {
+    fileReader.onload = async(e) => {
       var workbook = XLSX.read(fileReader.result, {
         type: 'binary',
         sheetRows: 0,
@@ -75,106 +75,117 @@ export class ResultComponent implements OnInit {
 
       console.log(this.uploadedData);
       console.log(this.subjectData);
-      this.AddSub(this.SemObjId, this.subjectData); // to add the subject details of applied sem (subject and subject code)
-      this.AddStudent(this.SemObjId, this.uploadedData); //to add details of students like marks,usn,name,percentage etc
-      // this.submitload = !this.submitload;
-      if (!this.submitload) {
-        this.viewresult = true;
-      }
+
+      //this function is used to add subjects in subject table 
+      (await this.AddSub(this.SemObjId, this.subjectData)).subscribe((data)=>{console.log(data);})
+      
+      //this function is used to add marks details for corresponding student
+      this.AddStudent(this.SemObjId, this.uploadedData).then(
+        (result)=>{
+          console.log("Hey Done ......................................................");
+          this.viewresult = true;
+          this.messageService.clear('duplicate');
+          this.messageService.add({life:600000,key:'success-added',severity:'success', summary:'Successfully added', detail:'Confirm to proceed'});
+          this.submitload = false;
+        }
+      ); //to add details of students like marks,usn,name,percentage etc
+
     };
   }
   Subjects: Array<sub_interface> = []; // Array conataining the subject details (subject:subject code)
 
-  AddSub(SemObjId: any, subjectData: any) {
-    for (var subname in subjectData[0]) {
+  async AddSub(SemObjId: any, subjectData: any) {
+    return new Observable((res)=>{
+      for (var subname in subjectData[0]) {
       let subobj = {
         semId: SemObjId,
         subcode: subjectData[0][subname],
         subject: subname,
       };
+
+      // let arg = lastValueFrom(this.ResultsService.postSub(subobj))
+
       this.ResultsService.postSub(subobj).subscribe((arg) => {
         console.log(arg);
         this.Subjects.push(arg._id);
       });
+      // this.Subjects.push(arg._id);
     }
+    res.next(true);
+    })
+    
   }
 
   AddStudent(semId: any, uploadedData: any) {
-    let id = 0;
-    uploadedData.forEach(async (_data: any, j: any) => {
-      id = j;
-      let percent = Number(uploadedData[j]['Percentage']);
-      // console.log(percent);
-      let stdobj = {
-        semId: semId,
-        name: uploadedData[j]['NAME'],
-        usn: uploadedData[j]['USN'],
-        totalmarks: uploadedData[j]['Total'],
-        percentage: percent,
-      };
-      const arg = await lastValueFrom(this.ResultsService.postStudent(stdobj));
-      this.AddMarks(
-        this.SemObjId,
-        arg._id,
-        this.Subjects,
-        this.uploadedData,
-        j
-      );
-    });
-    // if(id >= uploadedData.length-1) {
-    //   this.viewresult = false;
-    console.log('************************************');
-    // }
+    return new Promise((res)=>{
+      // let id = 0;
+      // for(let j=0; j<uploadedData.length; j++){
+      //   let percent = Number(uploadedData[j]['Percentage']);
+      //   // console.log(percent);
+      //   let stdobj = {
+      //     semId: semId,
+      //     name: uploadedData[j]['NAME'],
+      //     usn: uploadedData[j]['USN'],
+      //     totalmarks: uploadedData[j]['Total'],
+      //     percentage: percent,
+      //   };
+      //   const arg = await lastValueFrom(this.ResultsService.postStudent(stdobj));        
+
+      //   this.AddMarks(this.SemObjId,arg._id,this.Subjects,this.uploadedData,j);
+      // }
+      // res(true);
+
+
+     let parr = new Array();
+      uploadedData.forEach(async (_data: any, j: any) => {
+        // id = j;
+        let percent = Number(uploadedData[j]['Percentage']);
+        // console.log(percent);
+        let stdobj = {
+          semId: semId,
+          name: uploadedData[j]['NAME'],
+          usn: uploadedData[j]['USN'],
+          totalmarks: uploadedData[j]['Total'],
+          percentage: percent,
+        };
+        const arg = await lastValueFrom(this.ResultsService.postStudent(stdobj));        
+
+        parr.push(this.AddMarks(this.SemObjId, arg._id, this.Subjects,this.uploadedData,j));
+        Promise.all(parr).then(()=>{
+          res(true);
+        });
+      });
+      
+    })    
   }
 
-  async AddMarks(
-    semId: any,
-    StdId: any,
-    Subjects: any[],
-    uploadedData: any,
-    idx: any
-  ) {
-    console.log('Hello' + idx);
-    const subdetails = await lastValueFrom(this.ResultsService.getSub());
-    Subjects.forEach(async (subid, j) => {
-      let key: any;
-      for (let i = 0; i < subdetails.length; i++) {
-        if (subid == subdetails[i]._id) {
-          if (!this.submitload) this.submitload = true;
-          key = subdetails[i].subject;
-          // console.log(semId+" "+StdId+" "+subid+" "+uploadedData[j][key]+" "+key +" "+ idx);
-          // console.log(
-          //   StdId +
-          //     ' ' +
-          //     subid +
-          //     ' ' +
-          //     key +
-          //     ' ' +
-          //     uploadedData[idx][String(key) + '_IA'] +
-          //     ' ' +
-          //     uploadedData[idx][String(key) + '_EA'] +
-          //     ' ' +
-          //     uploadedData[idx][key] +
-          //     ' ' +
-          //     idx
-          // );
-          let marksobj = {
-            semId: semId,
-            subId: subid,
-            studentId: StdId,
-            ia: uploadedData[idx][String(key) + '_IA'],
-            ea: uploadedData[idx][String(key) + '_EA'],
-            totalMarksPerSubject: uploadedData[idx][key],
-          };
-          const arg = await lastValueFrom(
-            this.ResultsService.postMarks(marksobj)
-          );
-          break;
-        }
+   AddMarks(semId: any, StdId: any,Subjects: any[],uploadedData: any,idx: any) {
+    return new Promise(async(res)=>{
+      
+      console.log('Hello' + idx);
+      const subdetails = await lastValueFrom(this.ResultsService.getSub());      
+      Subjects.forEach(async (subid, j) => {
+        let key: any;
+        for (let i = 0; i < subdetails.length; i++) {
+          if (subid == subdetails[i]._id) {
+            key = subdetails[i].subject;
+            let marksobj = {
+              semId: semId,
+              subId: subid,
+              studentId: StdId,
+              ia: uploadedData[idx][String(key) + '_IA'],
+              ea: uploadedData[idx][String(key) + '_EA'],
+              totalMarksPerSubject: uploadedData[idx][key],
+            };
+            const arg = await lastValueFrom(this.ResultsService.postMarks(marksobj));
+            res(true);
+            break;
+          }
       }
     });
     console.log('...............');
-  
+    })
+    
   }
   //Add sem
   uploadFile = false; //this is flag to show the upload button
@@ -187,6 +198,7 @@ export class ResultComponent implements OnInit {
 
     console.log(data.form.value); //ex:{  sem : 2 }
     let semObj = data.form.value;
+    this.selectedSem = semObj.sem;
     let isSemavailable = true;
 
     this.ResultsService.getSem().subscribe({
@@ -196,11 +208,7 @@ export class ResultComponent implements OnInit {
             console.log('Duplicate.....');
             console.log(element);
             isSemavailable = false;
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'cannot add duplicate Sem',
-            });
+            this.messageService.add({key:'duplicate',severity: 'error',summary: 'Error',detail: 'cannot add duplicate Sem'});
             return;
           }
         });

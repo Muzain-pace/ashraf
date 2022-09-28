@@ -104,7 +104,7 @@
       &nbsp;&nbsp;
       <button pButton type="submit" label="Add" pRipple></button>
     </form>
-    <p-toast></p-toast>
+    <p-toast key="duplicate"></p-toast>
 
     <div class="tabClass" *ngIf="spinnerload">
       <!-- <mat-spinner color="warn"></mat-spinner> -->
@@ -118,6 +118,24 @@
   </div>
 </body>
 
-<div #view *ngIf="viewresult">
-  <app-view-result></app-view-result>
-</div>
+<!-- *ngIf="viewresult" -->
+<!-- <div *ngIf="viewresult"> -->
+  <p-toast key="success-added" position="center">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column" style="flex: 1">
+            <div class="text-center">
+                <i class="pi pi-check" style="font-size: 3rem"></i>
+                <h4>{{message.summary}}</h4>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="grid p-fluid container">
+                <div class="col-6">
+                    <button type="button" pButton label="Yes" class="p-button-success" routerLink="/viewResult" routerLinkActive="active"></button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+
+  <!-- <app-view-result></app-view-result> -->
+<!-- </div> -->
