@@ -1,6 +1,7 @@
 const express = require("express");
 const { db } = require("../model/model");
 const Model = require("../model/model");
+const batchModel = require("../model/batchModel");
 const SemModel = require("../model/semModel");
 const SubModel = require("../model/subModel");
 const StudentModel = require("../model/studentModel");
@@ -113,7 +114,17 @@ router.delete('/delete/:id', (req, res) => {
 //     }
 // })
 
-//posting semester subject and marks of student
+//posting batch, semester, subject, student and mark details
+router.post("/batch", async (req, res) => {
+  const data = new batchModel(req.body);
+
+  try {
+    const dataToSave = await data.save();
+    res.status(200).json(dataToSave);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 router.post("/sem", async (req, res) => {
   const data = new SemModel(req.body);
@@ -157,9 +168,19 @@ router.post("/marks", async (req, res) => {
 });
 
 /*********************************GETTING SEM DETAIL************************************************* */
-router.get("/getSem", async (req, res) => {
+router.get("/getBatch/:batch", async (req, res) => {
   try {
-    const data = await semModel.find();
+    const data = await batchModel.find({ batch: req.params.batch }, { _id: 1 });
+    res.status(200);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/getSem/:sem", async (req, res) => {
+  try {
+    const data = await semModel.find({ sem: req.params.sem }, { batchId: 1 });
     res.status(200);
     res.json(data);
   } catch (error) {
@@ -168,10 +189,13 @@ router.get("/getSem", async (req, res) => {
 });
 
 //get students over all toppers with sorted order
-router.get("/getStudentTopper", async (req, res) => {
+router.get("/getStudentTopper/:semId", async (req, res) => {
   try {
     const data = await studentModel
-      .find({ percentage: { $gte: 77.5 } }, { _id: 0, __v: 0 })
+      .find(
+        { semId: req.params.semId, percentage: { $gte: 77.5 } },
+        { _id: 0, __v: 0 }
+      )
       .sort({ totalmarks: -1 });
     res.status(200);
     res.json(data);
@@ -197,7 +221,7 @@ router.get("/getStudentTopper", async (req, res) => {
 //     }
 // })
 
-function helper(sub) {
+function helper(sub, semId) {
   return new Promise(async (res, rej) => {
     let markpersubObj = await MarksModel.aggregate([
       {
@@ -228,7 +252,8 @@ function helper(sub) {
       {
         $match: {
           $expr: {
-            $eq: ["$subId", sub._id],
+            // $eq: ["$subId", sub._id],
+            $and: [{ $eq: ["$_id", sub._id] }, { $eq: ["$semId", semId] }],
           },
         },
       },
@@ -237,14 +262,14 @@ function helper(sub) {
   });
 }
 
-router.get("/getSubTopper", async (req, res) => {
+router.get("/getSubTopper/:semId", async (req, res) => {
   try {
     let _subID = await SubModel.find({}, { _id: 1 });
     let Data = new Array();
     // for(let i=0; i<_subID.length; i++){
 
     _subID.forEach((sub) => {
-      Data.push(helper(sub));
+      Data.push(helper(sub, req.params.semId));
     });
     Promise.all(Data).then((val) => {
       res.status(200).json(val);

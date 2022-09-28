@@ -1,12 +1,16 @@
-const mongoose = require('mongoose');
-
-
+const mongoose = require("mongoose");
+let Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 const semschema = new mongoose.Schema({
-    sem:{
-        required:true,
-        type:Number
-    }
-})
+  batchId: {
+    required: true,
+    type: ObjectId,
+  },
+  sem: {
+    required: true,
+    type: Number,
+  },
+});
 
-module.exports = mongoose.model('Sem', semschema)
+module.exports = mongoose.model("Sem", semschema);

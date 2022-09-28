@@ -14,6 +14,11 @@ import { async, lastValueFrom, Observable, Subject } from 'rxjs';
 interface Sem {
   name: string;
   code: number;
+  
+}
+interface Batch{
+  name: string;
+  code: number;
 }
 interface sub_interface {
   subId: string;
@@ -28,6 +33,7 @@ interface sub_interface {
 })
 export class ResultComponent implements OnInit {
   sem: Sem[];
+  batch: Batch[];
   constructor(
     private primengConfig: PrimeNGConfig,
     private ResultsService: ResultsService,
@@ -43,9 +49,15 @@ export class ResultComponent implements OnInit {
       { name: 'VII', code: 7 },
       { name: 'VIII', code: 8 },   
     ];
+    this.batch = [
+      { name: '2018', code: 2018 },
+      { name: '2019', code: 2019 },
+      { name: '2020', code: 2020 },
+    ];
   }
+  selectedBatch: number =0;
   selectedSem: number = 0;
-
+  
   submitload = false; //this flag is used when file is uploading....
   // upload the excel file
   uploadedData: any; //uploadedData contains worksheet1
@@ -77,7 +89,7 @@ export class ResultComponent implements OnInit {
       console.log(this.subjectData);
 
       //this function is used to add subjects in subject table 
-      (await this.AddSub(this.SemObjId, this.subjectData)).subscribe((data)=>{console.log(data);})
+      (this.AddSub(this.SemObjId, this.subjectData))
       
       //this function is used to add marks details for corresponding student
       this.AddStudent(this.SemObjId, this.uploadedData).then(
@@ -95,14 +107,15 @@ export class ResultComponent implements OnInit {
   Subjects: Array<sub_interface> = []; // Array conataining the subject details (subject:subject code)
 
   async AddSub(SemObjId: any, subjectData: any) {
-    return new Observable((res)=>{
+    return new Promise((res)=>{
+    
       for (var subname in subjectData[0]) {
       let subobj = {
         semId: SemObjId,
         subcode: subjectData[0][subname],
         subject: subname,
       };
-
+      console.log(subobj)
       // let arg = lastValueFrom(this.ResultsService.postSub(subobj))
 
       this.ResultsService.postSub(subobj).subscribe((arg) => {
@@ -111,31 +124,13 @@ export class ResultComponent implements OnInit {
       });
       // this.Subjects.push(arg._id);
     }
-    res.next(true);
+    res(true);
     })
     
   }
 
   AddStudent(semId: any, uploadedData: any) {
     return new Promise((res)=>{
-      // let id = 0;
-      // for(let j=0; j<uploadedData.length; j++){
-      //   let percent = Number(uploadedData[j]['Percentage']);
-      //   // console.log(percent);
-      //   let stdobj = {
-      //     semId: semId,
-      //     name: uploadedData[j]['NAME'],
-      //     usn: uploadedData[j]['USN'],
-      //     totalmarks: uploadedData[j]['Total'],
-      //     percentage: percent,
-      //   };
-      //   const arg = await lastValueFrom(this.ResultsService.postStudent(stdobj));        
-
-      //   this.AddMarks(this.SemObjId,arg._id,this.Subjects,this.uploadedData,j);
-      // }
-      // res(true);
-
-
      let parr = new Array();
       uploadedData.forEach(async (_data: any, j: any) => {
         // id = j;
@@ -189,43 +184,114 @@ export class ResultComponent implements OnInit {
   }
   //Add sem
   uploadFile = false; //this is flag to show the upload button
-
+  BatchObjId: any;
   SemObjId: any;
   spinnerload = false;
-  AddSem(data: any) {
+
+AddSem(batch_id:any,sem:any){
+  return new Promise(async (res,rej)=>{
+    let arg = await lastValueFrom(this.ResultsService.getSem(sem));
+    var flag:Number=0;
+    for(let i=0; i<arg.length; i++)
+    {
+      if(batch_id == arg[i].batchId){
+        flag=1;
+        this.messageService.add({key:'duplicate',severity: 'error',summary: 'Error',detail: 'cannot add duplicate Sem'});
+        break;
+      }
+    }
+    if(flag==0)
+    {
+      let semobj = {
+        "sem": sem,
+        "batchId":batch_id
+      }
+      let arg2 = await lastValueFrom( this.ResultsService.postSem(semobj));
+      this.SemObjId = arg2
+      localStorage.setItem('semId', arg2._id);
+
+      this.ResultsService.semId = arg2._id;
+      console.log("added sem + batch")
+      this.uploadFile = true;
+    }
+
+    res(true);
+  })
+
+  
+}
+
+
+  async AddBatch(data: any) {
     //when Add button is clicked this function is called
     this.spinnerload = !this.spinnerload;
 
-    console.log(data.form.value); //ex:{  sem : 2 }
-    let semObj = data.form.value;
-    this.selectedSem = semObj.sem;
+
+    console.log(data.form.value); //ex:{  batch: 2019, sem : 2 }
+    let Obj = data.form.value;
+    this.selectedSem = Obj.sem;
     let isSemavailable = true;
 
-    this.ResultsService.getSem().subscribe({
-      next: (data) => {
-        data.forEach((element) => {
-          if (element.sem == semObj.sem) {
-            console.log('Duplicate.....');
-            console.log(element);
-            isSemavailable = false;
-            this.messageService.add({key:'duplicate',severity: 'error',summary: 'Error',detail: 'cannot add duplicate Sem'});
-            return;
-          }
-        });
-        if (isSemavailable) {
-          this.ResultsService.postSem(semObj).subscribe((arg) => {
-            this.SemObjId = arg._id;
-            console.log('Added Sem to db ..' + arg._id);
-          });
-          this.uploadFile = true;
-        }
-        this.spinnerload = !this.spinnerload;
-      },
-      error: (e) => console.error(e),
-    });
+    let batcharr = new Array();
+    batcharr.push(await lastValueFrom(this.ResultsService.getBatch((Obj.batch))));
+    console.log(batcharr)
+    // (this.ResultsService.getBatch((Obj.batch))).subscribe((arg)=>{
+    //   batcharr.push(arg[0]);      //this array will either -have the batch and its id if present or -will be empty 
+    // })
+    // console.log("**************");
+    console.log(batcharr);
+    if (batcharr[0].length == 0) //if batch was not previously added
+    {
+
+      console.log(Obj.batch)
+      let ob = {"batch":Obj.batch}
+      let arg = await lastValueFrom( this.ResultsService.postBatch((ob)));
+      this.BatchObjId = arg._id
+
+    }
+    else{
+      this.BatchObjId = batcharr[0][0]._id;
+    }
+    this.AddSem(this.BatchObjId, Obj.sem)
+    
+
+    console.log(this.BatchObjId);
+
+    
   }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
   }
 }
+
+
+
+
+
+
+/*
+.subscribe({
+    next: (data) => {
+      data.forEach((element) => {
+        if (batch_id == element.batchId) {
+          console.log('Duplicate.....');
+          console.log(element);
+          isSemavailable = false;
+          this.messageService.add({key:'duplicate',severity: 'error',summary: 'Error',detail: 'cannot add duplicate Sem'});
+          return;
+        }
+      });
+      if (isSemavailable) {
+        this.ResultsService.postSem(Obj).subscribe((arg) => {
+          this.SemObjId = arg._id;
+          console.log('Added Sem to db ..' + arg._id);
+        });
+        this.uploadFile = true;
+      }
+      this.spinnerload = !this.spinnerload;
+    },
+    error: (e) => console.error(e),
+  });
+
+*/

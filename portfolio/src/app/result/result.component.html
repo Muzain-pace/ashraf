@@ -71,25 +71,15 @@
   </div>
 
   <div class="tabClass">
-    <form action="" method="post" #data="ngForm" (ngSubmit)="AddSem(data)">
+    <form action="" method="post" #data="ngForm" (ngSubmit)="AddBatch(data)">
       <p-dropdown
         autoWidth="false"
         [style]="{ width: '100px' }"
-        [options]="sem"
-        [(ngModel)]="selectedSem"
+        [options]="batch"
+        [(ngModel)]="selectedBatch"
         optionLabel="name"
         optionValue="code"
-        name="sem"
-      ></p-dropdown>
-      &nbsp;&nbsp;
-      <p-dropdown
-        autoWidth="false"
-        [style]="{ width: '100px' }"
-        [options]="sem"
-        [(ngModel)]="selectedSem"
-        optionLabel="name"
-        optionValue="code"
-        name="sem"
+        name="batch"
       ></p-dropdown>
       &nbsp;&nbsp;
       <p-dropdown
