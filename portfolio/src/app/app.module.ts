@@ -50,8 +50,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
-
+import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatPaginatorModule} from '@angular/material/paginator'; 
+import {MatTableModule} from '@angular/material/table'; 
 
 @NgModule({
   declarations: [
@@ -91,7 +92,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatProgressBarModule,
     MatFormFieldModule,
     MatToolbarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule,
+    MatPaginatorModule,
+    MatTableModule
 
   ],
   providers: [MessageService],
