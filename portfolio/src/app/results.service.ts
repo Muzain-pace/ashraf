@@ -51,11 +51,11 @@ export class ResultsService {
   }
   //get subject wise topper
   getSubTopper():Observable<any[]>{
-    return this.http.get<any>('http://localhost:3000/api/getSubjectTopper');
+    return this.http.get<any>('http://localhost:3000/api/getSubTopper');
   }
   //get subject wise faile students
   getSubFail():Observable<any[]>{
-    return this.http.get<any>('http://localhost:3000/api/subjectwisefailure');
+    return this.http.get<any>('http://localhost:3000/api/subfailure');
   }
 
 }

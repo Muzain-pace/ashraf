@@ -41,7 +41,7 @@ export class ResultComponent implements OnInit {
       { name: 'V', code: 5 },
       { name: 'VI', code: 6 },
       { name: 'VII', code: 7 },
-      { name: 'VIII', code: 8 },
+      { name: 'VIII', code: 8 },   
     ];
   }
   selectedSem: number = 0;
@@ -150,7 +150,7 @@ export class ResultComponent implements OnInit {
         };
         const arg = await lastValueFrom(this.ResultsService.postStudent(stdobj));        
 
-        parr.push(this.AddMarks(this.SemObjId,arg._id,this.Subjects,this.uploadedData,j));
+        parr.push(this.AddMarks(this.SemObjId, arg._id, this.Subjects,this.uploadedData,j));
         Promise.all(parr).then(()=>{
           res(true);
         });
@@ -159,7 +159,7 @@ export class ResultComponent implements OnInit {
     })    
   }
 
-   AddMarks(semId: any,StdId: any,Subjects: any[],uploadedData: any,idx: any) {
+   AddMarks(semId: any, StdId: any,Subjects: any[],uploadedData: any,idx: any) {
     return new Promise(async(res)=>{
       
       console.log('Hello' + idx);
@@ -198,6 +198,7 @@ export class ResultComponent implements OnInit {
 
     console.log(data.form.value); //ex:{  sem : 2 }
     let semObj = data.form.value;
+    this.selectedSem = semObj.sem;
     let isSemavailable = true;
 
     this.ResultsService.getSem().subscribe({
