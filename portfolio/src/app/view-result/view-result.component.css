@@ -4,9 +4,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center; */
-    top: 1rem;
+    top: 2rem;
 } 
-
+*{
+    background-color: white;
+}
 
 .tabClass1{
     position: relative;
@@ -22,6 +24,7 @@ table{
     border-collapse: separate;
     border-spacing: 0 0em;
     border-radius: 10px;
+    /* background-color: white; */
     border: solid lightcoral 1px;
 }
 

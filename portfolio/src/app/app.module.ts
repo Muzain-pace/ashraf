@@ -53,10 +53,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {MatPaginatorModule} from '@angular/material/paginator'; 
 import {MatTableModule} from '@angular/material/table'; 
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatMenuModule} from '@angular/material/menu';
-import { ViewGraphComponent } from './view-graph/view-graph.component'; 
-import {ChartModule} from'primeng/chart'
+
 @NgModule({
   declarations: [
     AppComponent, 
@@ -68,7 +65,6 @@ import {ChartModule} from'primeng/chart'
     GetOneComponent,
     ResultComponent,
     ViewResultComponent,
-    ViewGraphComponent,
 
 
   ],
@@ -99,10 +95,7 @@ import {ChartModule} from'primeng/chart'
     MatSelectModule,
     MatTabsModule,
     MatPaginatorModule,
-    MatTableModule,
-    MatSidenavModule,
-    MatMenuModule,
-    ChartModule
+    MatTableModule
 
   ],
   providers: [MessageService],
