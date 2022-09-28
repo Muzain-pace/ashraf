@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Scale } from 'chart.js';
 import { lastValueFrom } from 'rxjs';
 import { ResultsService } from '../results.service';
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { NONE_TYPE } from '@angular/compiler';
 
 let labels:any[]=[];
 let data1:any[]=[];
@@ -16,10 +20,33 @@ let data2:any[]=[];
 
 export class ViewResultComponent implements OnInit {
 	options: any;
-  constructor(private ResultsService:ResultsService) {
+	
+  constructor(private ResultsService:ResultsService) {}
 
-   }
+  btnhidden = false;
+  public openPDF(): void {
+	
+	
+	setTimeout(() => {
+		
+		this.btnhidden = true;
+		let DATA: any = document.getElementById('table1');
+		html2canvas(DATA).then((canvas) => {
+			let fileWidth = 208;
+			let fileHeight = (canvas.height * fileWidth) / canvas.width;
+			const FILEURI = canvas.toDataURL('image/png');
+			let PDF = new jsPDF('p', 'mm', 'a4');
+			let position = 0;
+			PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+			PDF.save('angular-demo.pdf');
+	
+		});
 
+	}, 2000);
+	this.btnhidden = false;
+    
+
+  }
   TopperObj:any;
   SubjectTopperObj:any;
   SubjectFailObj:any;
@@ -33,6 +60,7 @@ export class ViewResultComponent implements OnInit {
 		data1.push(this.TopperObj[i].totalmarks)
 		data2.push(this.TopperObj[i].percentage)
 	}
+
 	
 	this.datas = {
 		labels: labels,
@@ -63,45 +91,11 @@ export class ViewResultComponent implements OnInit {
 		},
 		
 	};
+	
 
   }
+  datas :any;
+
+}
   
 
-
-
-
-  datas :any;
-  selectedUser = null;
-	userArray = [
-		{
-		  uid: '10',
-		  age: 22,
-		  username: 'John Paul',
-		},
-		{
-		  uid: '11',
-		  age: 35,
-		  username: 'Peter Jackson',
-		},
-		{
-		  uid: '12',
-		  age: 30,
-		  username: 'Will Smith',
-		},
-		{
-		  uid: '13',
-		  age: 25,
-		  username: 'Peter Paul',
-		},
-		{
-		  uid: '14',
-		  age: 34,
-		  username: 'Johnson Peter',
-		},
-		{
-		  uid: '15',
-		  age: 30,
-		  username: 'Eric Smidth',
-		},
-	  ];
-}

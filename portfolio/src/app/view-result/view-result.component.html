@@ -1,7 +1,9 @@
+<div id="table1">
 <div class="tabClass">
   <mat-tab-group mat-align-tabs="center">
     <mat-tab label="Toppers">
       <table
+       
         class="table table-striped table-bordered table-sm mat-elevation-z8"
       >
         <thead>
@@ -27,9 +29,16 @@
         </tbody>
       </table>
       <mat-paginator></mat-paginator>
-      <div class="tabClass1">
+      <div class="tabClass1" *ngIf="!btnhidden">
         <button mat-raised-button color="primary">View Graph</button> &nbsp;
-        <button mat-raised-button color="primary">Download</button>
+        <button
+          mat-raised-button
+          color="primary"
+          id="button"
+          (click)="openPDF()"
+        >
+          Download
+        </button>
       </div>
     </mat-tab>
 
@@ -60,6 +69,7 @@
           </tr>
         </tbody>
       </table>
+
       <mat-paginator></mat-paginator>
       <div class="tabClass1">
         <button mat-raised-button color="primary">View Graph</button> &nbsp;
@@ -78,7 +88,7 @@
           <tr style="text-align: center">
             <th class="th-sm">
               <button mat-button style="font-weight: bold">
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedUser">
+                <select class="form-select" aria-label="Default select example">
                   <option *ngFor="let obj of SubjectTopperObj" [ngValue]="obj">
                     {{ obj.subId }}
                   </option>
@@ -92,8 +102,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let obj of SubjectTopperObj; let i =index">
-            <td scope="row" style="text-align: center; width:20%">{{ i+1 }}</td>
+          <tr *ngFor="let obj of SubjectTopperObj; let i = index">
+            <td scope="row" style="text-align: center; width: 20%">
+              {{ i + 1 }}
+            </td>
             <td>{{ obj.semId }}</td>
             <td>{{ obj.subId }}</td>
             <td style="text-align: center">{{ obj.ia }}</td>
@@ -114,8 +126,7 @@
         </thead>
         <tbody></table -->
 
-
-            <mat-paginator></mat-paginator>
+      <mat-paginator></mat-paginator>
       <div class="tabClass1">
         <button mat-raised-button color="primary">View Graph</button> &nbsp;
         <button mat-raised-button color="primary">Download</button>
@@ -137,5 +148,12 @@
   integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
   crossorigin="anonymous"
 ></script>
-
-<p-chart type="bar" [data]="datas" width="100%" [options]="options" height="80vh" ></p-chart>
+&nbsp;
+<p-chart
+  type="bar"
+  [data]="datas"
+  width="100%"
+  [options]="options"
+  height="100vh"
+></p-chart>
+</div>
