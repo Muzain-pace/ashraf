@@ -1,7 +1,9 @@
+<div id="table1">
 <div class="tabClass">
   <mat-tab-group mat-align-tabs="center">
     <mat-tab label="Toppers">
       <table
+       
         class="table table-striped table-bordered table-sm mat-elevation-z8"
       >
         <thead>
@@ -22,9 +24,16 @@
         </tbody>
       </table>
       <mat-paginator></mat-paginator>
-      <div class="tabClass1">
+      <div class="tabClass1" *ngIf="!btnhidden">
         <button mat-raised-button color="primary">View Graph</button> &nbsp;
-        <button mat-raised-button color="primary">Download</button>
+        <button
+          mat-raised-button
+          color="primary"
+          id="button"
+          (click)="openPDF()"
+        >
+          Download
+        </button>
       </div>
     </mat-tab>
 
@@ -55,6 +64,7 @@
           </tr>
         </tbody>
       </table>
+
       <mat-paginator></mat-paginator>
       <div class="tabClass1">
         <button mat-raised-button color="primary">View Graph</button> &nbsp;
@@ -69,13 +79,84 @@
         cellspacing="0"
         style="width: 100%"
       >
+
+        <thead>
+          <tr style="text-align: center">
+            <th class="th-sm">
+              <button mat-button style="font-weight: bold">
+                <select class="form-select" aria-label="Default select example">
+                  <option *ngFor="let obj of SubjectTopperObj" [ngValue]="obj">
+                    {{ obj.subId }}
+                  </option>
+                </select>
+              </button>
+            </th>
+            <th class="th-sm">Semester</th>
+            <th class="th-sm">Subject</th>
+            <th class="th-sm">IA Marks</th>
+            <th class="th-sm">EA Marks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of SubjectTopperObj; let i = index">
+            <td scope="row" style="text-align: center; width: 20%">
+              {{ i + 1 }}
+            </td>
+            <td>{{ obj.semId }}</td>
+            <td>{{ obj.subId }}</td>
+            <td style="text-align: center">{{ obj.ia }}</td>
+            <td style="text-align: center">{{ obj.ea }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- <table
+        id="dtBasicExample"
+        class="table table-striped table-bordered table-sm mat-elevation-z8"
+        cellspacing="0"
+        style="width: 100%">
+
         <thead >
           <tr *ngFor="let obj of SubjectFailObj;let i=index ">
             <th style="text-align: center" *ngFor="let a is obj.length">{{obj[a].totalMarksPerSubject}}</th>
           </tr>
+
+
+      <mat-paginator></mat-paginator>
+      <div class="tabClass1">
+        <button mat-raised-button color="primary">View Graph</button> &nbsp;
+        <button mat-raised-button color="primary">Download</button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<!-- CSS only -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+  crossorigin="anonymous"
+/>
+<!-- JavaScript Bundle with Popper -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+  crossorigin="anonymous"
+></script>
+&nbsp;
+<p-chart
+  type="bar"
+  [data]="datas"
+  width="100%"
+  [options]="options"
+  height="100vh"
+></p-chart>
+</div>
 
         </thead>
         <tbody></table
     ></mat-tab>
   </mat-tab-group>
 </div>
+
