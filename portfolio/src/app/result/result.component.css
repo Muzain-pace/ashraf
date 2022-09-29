@@ -22,7 +22,7 @@
     justify-content: end;
     align-items: flex-end;
     top: 3rem; 
-    right: 28rem; 
+    right: 30rem; 
 }
 .help-icon:hover{
     cursor:grab;
@@ -36,7 +36,6 @@
   
 
 body{
-    margin: 0;
-    padding: 0;
+    
     background-color: rgba(147, 181, 243, 0.26);
 }

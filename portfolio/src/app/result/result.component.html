@@ -1,6 +1,6 @@
 <body>
   <!-- *ngIf="submitload" -->
-  <div *ngIf="submitload" >
+  <div *ngIf="submitload">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <!-- Modal -->
@@ -16,11 +16,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3
-            style="font-weight: bold"
+            style="
+              font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial,
+                sans-serif;
+            "
             class="modal-title"
             id="exampleModalLabel"
           >
-            SHEET MODEL
+            Sample Sheets
           </h3>
           <button
             type="button"
@@ -32,19 +35,26 @@
           </button>
         </div>
         <div class="modal-body">
-          <h3>SHEET 1</h3>
+          <h3 style="font-weight: bold">SHEET 1</h3>
           <img
             src="../../assets/images/sheet1.png"
             alt=""
             style="width: 100%; position: relative"
           />
-          &nbsp;
-          <h3>SHEET 2</h3>
+          <ul>
+            <li>blah</li>
+            <li>blah</li>
+          </ul>
+          <h3 style="font-weight: bold">SHEET 2</h3>
           <img
             src="../../assets/images/sheet2.png"
             alt=""
             style="width: 100%; position: relative"
           />
+          <ul>
+            <li>blah</li>
+            <li>blah</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button
@@ -60,13 +70,19 @@
   </div>
 
   <div class="help-icon">
-    <a data-bs-toggle="modal" data-bs-target="#exampleModalLong">
-      <mat-icon
+    <a
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModalLong"
+      class="badge bg-danger"
+      style="text-decoration: none; color: azure"
+    >
+      <!-- <mat-icon
         aria-hidden="false"
         aria-label="Example home icon"
         fontIcon="home"
         title="Click to know more"
-      ></mat-icon>
+      ></mat-icon> -->
+      info
     </a>
   </div>
 
@@ -92,7 +108,7 @@
         name="sem"
       ></p-dropdown>
       &nbsp;&nbsp;
-      <button pButton type="submit" label="Add" pRipple></button>
+      <button pButton type="submit" label="Choose" pRipple></button>
     </form>
     <p-toast key="duplicate"></p-toast>
 
@@ -102,30 +118,42 @@
     </div>
 
     <!-- *ngIf="uploadFile" -->
-    <div style="margin-top: 6em;" *ngIf="uploadFile">
-      <p-fileUpload style="height:30vh" name="myfile[]" [customUpload]="true" (uploadHandler)="UploadFile($event)"></p-fileUpload>
+    <div style="margin-top: 6em" *ngIf="uploadFile">
+      <p-fileUpload
+        style="height: 30vh"
+        name="myfile[]"
+        [customUpload]="true"
+        (uploadHandler)="UploadFile($event)"
+      ></p-fileUpload>
     </div>
   </div>
 </body>
 
 <!-- *ngIf="viewresult" -->
 <!-- <div *ngIf="viewresult"> -->
-  <p-toast key="success-added" position="center">
-    <ng-template let-message pTemplate="message">
-        <div class="flex flex-column" style="flex: 1">
-            <div class="text-center">
-                <i class="pi pi-check" style="font-size: 3rem"></i>
-                <h4>{{message.summary}}</h4>
-                <p>{{message.detail}}</p>
-            </div>
-            <div class="grid p-fluid container">
-                <div class="col-6">
-                    <button type="button" pButton label="Yes" class="p-button-success" routerLink="/viewResult" routerLinkActive="active"></button>
-                </div>
-            </div>
+<p-toast key="success-added" position="center">
+  <ng-template let-message pTemplate="message">
+    <div class="flex flex-column" style="flex: 1">
+      <div class="text-center">
+        <i class="pi pi-check" style="font-size: 3rem"></i>
+        <h4>{{ message.summary }}</h4>
+        <p>{{ message.detail }}</p>
+      </div>
+      <div class="grid p-fluid container">
+        <div class="col-6">
+          <button
+            type="button"
+            pButton
+            label="Yes"
+            class="p-button-success"
+            routerLink="/viewResult"
+            routerLinkActive="active"
+          ></button>
         </div>
-    </ng-template>
+      </div>
+    </div>
+  </ng-template>
 </p-toast>
 
-  <!-- <app-view-result></app-view-result> -->
+<!-- <app-view-result></app-view-result> -->
 <!-- </div> -->

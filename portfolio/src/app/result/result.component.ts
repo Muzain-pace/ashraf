@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
 import { AnimateTimings } from '@angular/animations';
 import { async, lastValueFrom, Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface Sem {
   name: string;
@@ -37,7 +38,8 @@ export class ResultComponent implements OnInit {
   constructor(
     private primengConfig: PrimeNGConfig,
     private ResultsService: ResultsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     this.sem = [
       { name: 'I', code: 1 },
@@ -99,6 +101,8 @@ export class ResultComponent implements OnInit {
           this.messageService.clear('duplicate');
           this.messageService.add({life:600000,key:'success-added',severity:'success', summary:'Successfully added', detail:'Confirm to proceed'});
           this.submitload = false;
+          // this.uploadFile = false;
+
         }
       ); //to add details of students like marks,usn,name,percentage etc
 
@@ -196,16 +200,20 @@ AddSem(batch_id:any,sem:any){
     {
       if(batch_id == arg[i].batchId){
         flag=1;
-        this.messageService.add({key:'duplicate',severity: 'error',summary: 'Error',detail: 'cannot add duplicate Sem'});
+        this.router.navigateByUrl('/viewResult');
         break;
       }
     }
     if(flag==0)
     {
+      this.messageService.add({key:'duplicate',severity: 'error',summary: 'data not available',detail: 'cannot get the data'});
       let semobj = {
         "sem": sem,
         "batchId":batch_id
       }
+
+      // while(this.uploadFile == true);
+
       let arg2 = await lastValueFrom( this.ResultsService.postSem(semobj));
       this.SemObjId = arg2
       localStorage.setItem('semId', arg2._id);
@@ -213,6 +221,7 @@ AddSem(batch_id:any,sem:any){
       this.ResultsService.semId = arg2._id;
       console.log("added sem + batch")
       this.uploadFile = true;
+
     }
 
     res(true);
@@ -270,28 +279,3 @@ AddSem(batch_id:any,sem:any){
 
 
 
-/*
-.subscribe({
-    next: (data) => {
-      data.forEach((element) => {
-        if (batch_id == element.batchId) {
-          console.log('Duplicate.....');
-          console.log(element);
-          isSemavailable = false;
-          this.messageService.add({key:'duplicate',severity: 'error',summary: 'Error',detail: 'cannot add duplicate Sem'});
-          return;
-        }
-      });
-      if (isSemavailable) {
-        this.ResultsService.postSem(Obj).subscribe((arg) => {
-          this.SemObjId = arg._id;
-          console.log('Added Sem to db ..' + arg._id);
-        });
-        this.uploadFile = true;
-      }
-      this.spinnerload = !this.spinnerload;
-    },
-    error: (e) => console.error(e),
-  });
-
-*/

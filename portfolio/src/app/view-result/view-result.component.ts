@@ -7,10 +7,17 @@ import { ResultsService } from '../results.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { NONE_TYPE } from '@angular/compiler';
-
-let labels:any[]=[];
+// for Toppers
+let labels1:any[]=[];
 let data1:any[]=[];
+let datas1:any[]=[];
+// for SubjectTopper
+let labels2:any[]=[];
 let data2:any[]=[];
+let datas2:any[]=[];
+
+
+
 
 // import { Component, OnInit } from '@angular/core';
 // import { lastValueFrom } from 'rxjs';
@@ -29,12 +36,10 @@ export class ViewResultComponent implements OnInit {
   constructor(private ResultsService:ResultsService) {}
 
   btnhidden = false;
-  public openPDF(): void {
-	
-	
+  public openPDF(type:string): void {
+
+	this.btnhidden = true;
 	setTimeout(() => {
-		
-		this.btnhidden = true;
 		let DATA: any = document.getElementById('table1');
 		html2canvas(DATA).then((canvas) => {
 			let fileWidth = 208;
@@ -43,12 +48,19 @@ export class ViewResultComponent implements OnInit {
 			let PDF = new jsPDF('p', 'mm', 'a4');
 			let position = 0;
 			PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-			PDF.save('angular-demo.pdf');
+			PDF.save(type+'.pdf');
 	
 		});
+		this.btnhidden = false;
+		
+	}, 1000);
+	
+		
+		
 
-	}, 2000);
-	this.btnhidden = false;
+	
+	
+	// this.btnhidden = true;
     
 
 //   constructor(private ResultsService:ResultsService) { }
@@ -61,18 +73,22 @@ export class ViewResultComponent implements OnInit {
     let semId = localStorage.getItem("semId");
     this.TopperObj = await lastValueFrom(this.ResultsService.getTopper(semId));
     this.SubjectTopperObj = await lastValueFrom(this.ResultsService.getSubTopper(semId));
-    this.SubjectFailObj = await lastValueFrom(this.ResultsService.getSubFail());
+    this.SubjectFailObj = await lastValueFrom(this.ResultsService.getSubFail(semId));
+// for Toppers
 
-	console.log(this.TopperObj)
 	for(let i=0;i<this.TopperObj.length;i++){
-		labels.push(this.TopperObj[i].usn)
+		labels1.push(this.TopperObj[i].usn)
 		data1.push(this.TopperObj[i].totalmarks)
-		data2.push(this.TopperObj[i].percentage)
+		datas1.push(this.TopperObj[i].percentage)
+	}
+// For SubjectToppers
+	for(let i=0;i<this.SubjectTopperObj.length;i++){
+		labels2.push(this.SubjectTopperObj[i].Student[0].usn)
+		data2.push(this.SubjectTopperObj[i].totalMarksPerSubject)
 	}
 
-	
-	this.datas = {
-		labels: labels,
+	this.datas11 = {
+		labels: labels1,
 		datasets: [
 			{
 				label: 'Topper Marks',
@@ -84,6 +100,38 @@ export class ViewResultComponent implements OnInit {
 			},
 			{
 				label: 'Percentage',
+				data: datas1,
+				backgroundColor: '#FFA726',
+			}
+		]
+	}
+	this.options = {
+		title: {
+			display: true,
+			text: 'My Title',
+			fontSize: 20
+		},
+		legend: {
+			position: 'bottom'
+		},
+		
+	};
+	
+
+
+	this.datas22 = {
+		labels: labels2,
+		datasets: [
+			{
+				label: 'Subject Toppers',
+				data: data2,
+				borderColor: '#42A5F5',
+				backgroundColor: 'rgba(2, 117, 216, 0.31)',
+
+				
+			},
+			{
+				label: 'Marks',
 				data: data2,
 				backgroundColor: '#FFA726',
 			}
@@ -103,7 +151,8 @@ export class ViewResultComponent implements OnInit {
 	
 
   }
-  datas :any;
+  datas11 :any;
+  datas22 :any;
 
 
   }

@@ -54,6 +54,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator'; 
 import {MatTableModule} from '@angular/material/table'; 
 import {ChartModule} from 'primeng/chart';
+import { TooltipModule } from "primeng/tooltip";
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent, 
@@ -65,6 +67,7 @@ import {ChartModule} from 'primeng/chart';
     GetOneComponent,
     ResultComponent,
     ViewResultComponent,
+    HomeComponent,
 
 
   ],
@@ -96,7 +99,8 @@ import {ChartModule} from 'primeng/chart';
     MatTabsModule,
     MatPaginatorModule,
     MatTableModule,
-    ChartModule
+    ChartModule,
+    TooltipModule
 
   ],
   providers: [MessageService],
