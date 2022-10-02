@@ -17,8 +17,6 @@ import { FormComponent } from './form/form.component';
 import { MatInputModule } from '@angular/material/input';   
 import {MatButtonModule} from '@angular/material/button';
 
-import { SignupComponent } from './signup/signup.component';
-import { SigninComponent } from './signup/signin/signin.component';
 import { Form2Component } from './form/form2/form2.component';  
 
 
@@ -61,8 +59,6 @@ import { HomeComponent } from './home/home.component';
     AppComponent, 
     SlidesComponent,
     FormComponent,
-    SignupComponent,
-    SigninComponent,
     Form2Component,
     GetOneComponent,
     ResultComponent,

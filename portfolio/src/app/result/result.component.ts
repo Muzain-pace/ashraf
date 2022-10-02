@@ -165,22 +165,40 @@ export class ResultComponent implements OnInit {
       const subdetails = await lastValueFrom(this.ResultsService.getSub());      
       Subjects.forEach(async (subid, j) => {
         let key: any;
-        for (let i = 0; i < subdetails.length; i++) {
-          if (subid == subdetails[i]._id) {
-            key = subdetails[i].subject;
-            let marksobj = {
-              semId: semId,
-              subId: subid,
-              studentId: StdId,
-              ia: uploadedData[idx][String(key) + '_IA'],
-              ea: uploadedData[idx][String(key) + '_EA'],
-              totalMarksPerSubject: uploadedData[idx][key],
-            };
-            const arg = await lastValueFrom(this.ResultsService.postMarks(marksobj));
-            res(true);
-            break;
-          }
-      }
+        // for (let i = 0; i < subdetails.length; i++) {
+          subdetails.every( async (sub,i) => {
+            if (subid == subdetails[i]._id) {
+              key = subdetails[i].subject;
+              let marksobj = {
+                semId: semId,
+                subId: subid,
+                studentId: StdId,
+                ia: uploadedData[idx][String(key) + '_IA'],
+                ea: uploadedData[idx][String(key) + '_EA'],
+                totalMarksPerSubject: uploadedData[idx][key],
+              };
+              const arg = await lastValueFrom(this.ResultsService.postMarks(marksobj));
+              res(true);
+              return false;
+            }
+            return true;
+          });
+
+          // if (subid == subdetails[i]._id) {
+          //   key = subdetails[i].subject;
+          //   let marksobj = {
+          //     semId: semId,
+          //     subId: subid,
+          //     studentId: StdId,
+          //     ia: uploadedData[idx][String(key) + '_IA'],
+          //     ea: uploadedData[idx][String(key) + '_EA'],
+          //     totalMarksPerSubject: uploadedData[idx][key],
+          //   };
+          //   const arg = await lastValueFrom(this.ResultsService.postMarks(marksobj));
+          //   res(true);
+          //   break;
+          // }
+      // }
     });
     console.log('...............');
     })
