@@ -89,6 +89,26 @@ export class ResultComponent implements OnInit {
 
       console.log(this.uploadedData);
       console.log(this.subjectData);
+      
+      let ob = {"batch":this.formObj.batch}
+      let arg = await lastValueFrom( this.ResultsService.postBatch((ob)));
+      this.BatchObjId = arg._id
+      
+      let semobj = {
+        "sem": this.formObj.sem,
+        "batchId":arg._id
+      }
+
+
+      let arg2 = await lastValueFrom( this.ResultsService.postSem(semobj));
+      this.SemObjId = arg2
+      localStorage.setItem('semId', arg2._id);
+
+      this.ResultsService.semId = arg2._id;
+      console.log("added sem + batch");
+
+
+
 
       //this function is used to add subjects in subject table 
       (this.AddSub(this.SemObjId, this.subjectData))
@@ -183,22 +203,6 @@ export class ResultComponent implements OnInit {
             }
             return true;
           });
-
-          // if (subid == subdetails[i]._id) {
-          //   key = subdetails[i].subject;
-          //   let marksobj = {
-          //     semId: semId,
-          //     subId: subid,
-          //     studentId: StdId,
-          //     ia: uploadedData[idx][String(key) + '_IA'],
-          //     ea: uploadedData[idx][String(key) + '_EA'],
-          //     totalMarksPerSubject: uploadedData[idx][key],
-          //   };
-          //   const arg = await lastValueFrom(this.ResultsService.postMarks(marksobj));
-          //   res(true);
-          //   break;
-          // }
-      // }
     });
     console.log('...............');
     })
@@ -218,6 +222,7 @@ AddSem(batch_id:any,sem:any){
     {
       if(batch_id == arg[i].batchId){
         flag=1;
+        localStorage.setItem('semId',arg[i]._id)
         this.router.navigateByUrl('/viewResult');
         break;
       }
@@ -225,19 +230,18 @@ AddSem(batch_id:any,sem:any){
     if(flag==0)
     {
       this.messageService.add({key:'duplicate',severity: 'error',summary: 'data not available',detail: 'cannot get the data'});
-      let semobj = {
-        "sem": sem,
-        "batchId":batch_id
-      }
+      // let semobj = {
+      //   "sem": sem,
+      //   "batchId":batch_id
+      // }
 
-      // while(this.uploadFile == true);
 
-      let arg2 = await lastValueFrom( this.ResultsService.postSem(semobj));
-      this.SemObjId = arg2
-      localStorage.setItem('semId', arg2._id);
+      // let arg2 = await lastValueFrom( this.ResultsService.postSem(semobj));
+      // this.SemObjId = arg2
+      // localStorage.setItem('semId', arg2._id);
 
-      this.ResultsService.semId = arg2._id;
-      console.log("added sem + batch")
+      // this.ResultsService.semId = arg2._id;
+      // console.log("added sem + batch")
       this.uploadFile = true;
 
     }
@@ -248,7 +252,7 @@ AddSem(batch_id:any,sem:any){
   
 }
 
-
+formObj:any;
   async AddBatch(data: any) {
     //when Add button is clicked this function is called
     this.spinnerload = !this.spinnerload;
@@ -258,22 +262,21 @@ AddSem(batch_id:any,sem:any){
     let Obj = data.form.value;
     this.selectedSem = Obj.sem;
     let isSemavailable = true;
+    this.formObj = Obj;
+
 
     let batcharr = new Array();
     batcharr.push(await lastValueFrom(this.ResultsService.getBatch((Obj.batch))));
     console.log(batcharr)
-    // (this.ResultsService.getBatch((Obj.batch))).subscribe((arg)=>{
-    //   batcharr.push(arg[0]);      //this array will either -have the batch and its id if present or -will be empty 
-    // })
-    // console.log("**************");
+    
     console.log(batcharr);
     if (batcharr[0].length == 0) //if batch was not previously added
     {
 
       console.log(Obj.batch)
-      let ob = {"batch":Obj.batch}
-      let arg = await lastValueFrom( this.ResultsService.postBatch((ob)));
-      this.BatchObjId = arg._id
+      // let ob = {"batch":Obj.batch}
+      // let arg = await lastValueFrom( this.ResultsService.postBatch((ob)));
+      // this.BatchObjId = arg._id
 
     }
     else{

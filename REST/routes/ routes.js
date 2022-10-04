@@ -424,8 +424,7 @@ router.get("/Sem/:semId", async (req, res) => {
       Promise.all(Data).then((val) => {
         res.status(200).json(val);
       });
-    
-    // res.status(200).json(_student);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

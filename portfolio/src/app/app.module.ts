@@ -54,6 +54,9 @@ import {MatTableModule} from '@angular/material/table';
 import {ChartModule} from 'primeng/chart';
 import { TooltipModule } from "primeng/tooltip";
 import { HomeComponent } from './home/home.component';
+import { TopperComponentComponent } from './view-result/topper-component/topper-component.component';
+import { SubtopperComponentComponent } from './view-result/subtopper-component/subtopper-component.component';
+import { FailComponentComponent } from './view-result/fail-component/fail-component.component';
 @NgModule({
   declarations: [
     AppComponent, 
@@ -64,6 +67,9 @@ import { HomeComponent } from './home/home.component';
     ResultComponent,
     ViewResultComponent,
     HomeComponent,
+    TopperComponentComponent,
+    SubtopperComponentComponent,
+    FailComponentComponent,
 
 
   ],
