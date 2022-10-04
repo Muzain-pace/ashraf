@@ -56,6 +56,7 @@ import {MatTableModule} from '@angular/material/table';
 import {ChartModule} from 'primeng/chart';
 import { TooltipModule } from "primeng/tooltip";
 import { HomeComponent } from './home/home.component';
+import {NgxTypedJsModule} from 'ngx-typed-js';
 @NgModule({
   declarations: [
     AppComponent, 
@@ -100,7 +101,8 @@ import { HomeComponent } from './home/home.component';
     MatPaginatorModule,
     MatTableModule,
     ChartModule,
-    TooltipModule
+    TooltipModule,
+    NgxTypedJsModule
 
   ],
   providers: [MessageService],
