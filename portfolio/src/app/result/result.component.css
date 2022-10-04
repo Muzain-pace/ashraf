@@ -5,13 +5,13 @@
     justify-content: center;
     align-items: center;
     top: 3rem;
-    height: 120;
+    height: 120; /* display: flex;
+    flex-direction: column;
+    justify-content: center; */
 }
 .tabClass2{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    position: fixed;
+   
     align-items: center;
     top: 10rem;
 }
@@ -22,7 +22,7 @@
     justify-content: end;
     align-items: flex-end;
     top: 3rem; 
-    right: 30rem; 
+    right: 35%; 
 }
 .help-icon:hover{
     cursor:grab;
