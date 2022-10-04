@@ -206,21 +206,6 @@ router.get("/getStudentTopper/:semId", async (req, res) => {
 
 //get subject wise topper with sorted order
 
-// router.get('/getSubjectTopper', async (req, res) => {
-//     try{
-//         let _subID =  await SubModel.find({},{_id:1});
-//         let Data = new Array();
-//         for(let i=0; i<_subID.length; i++){
-//             let markpersubObj = await MarksModel.find({ subId: _subID[i]._id }).sort({ totalMarksPerSubject: -1 });
-//             Data.push(markpersubObj[0]);
-//         }
-//         res.status(200).json(Data);
-//     }
-//     catch(error){
-//         res.status(500).json({message: error.message})
-//     }
-// })
-
 function helper(sub) {
   return new Promise(async (res, rej) => {
     let markpersubObj = await MarksModel.aggregate([
@@ -228,7 +213,10 @@ function helper(sub) {
         $match: {
           $expr: {
             // $eq: ["$subId", sub._id],
-            $and: [{ $eq: ["$subId", sub._id] }, { $eq: ["$semId", sub.semId] }],
+            $and: [
+              { $eq: ["$subId", sub._id] },
+              { $eq: ["$semId", sub.semId] },
+            ],
           },
         },
       },
@@ -241,9 +229,12 @@ function helper(sub) {
         },
       },
       {
+        "$unwind": "$Student"
+      },
+      {
         $lookup: {
           from: "subjects",
-        
+
           localField: "subId",
           foreignField: "_id",
           as: "Subject",
@@ -256,7 +247,10 @@ function helper(sub) {
 
 router.get("/getSubTopper/:semId", async (req, res) => {
   try {
-    let _subID = await SubModel.find({semId:req.params.semId}, { _id: 1,semId:1 });
+    let _subID = await SubModel.find(
+      { semId: req.params.semId },
+      { _id: 1, semId: 1 }
+    );
     let Data = new Array();
     // for(let i=0; i<_subID.length; i++){
 
@@ -285,23 +279,6 @@ router.get("/Subjectdetails", async (req, res) => {
 });
 
 /************************GET SUBJECTWISE FAILURES (Passing Mark:21)****************/
-// router.get('/subjectwisefailure', async (req, res) => {
-//     try{
-//         let _subID =  await SubModel.find({},{_id:1});
-//         let Data = new Array();
-//         // let total_failure = 0;
-//         for(let i=0; i<_subID.length; i++){
-//             let failuredetailsObj = await MarksModel.find({subId: _subID[i]._id, ea : {$lt :21}});
-//             // total_failure+=failuredetailsObj.length
-//             Data.push(failuredetailsObj);
-//         }
-//         res.status(200)
-//         res.json(Data);
-//     }
-//     catch(error){
-//         res.status(500).json({message: error.message})
-//     }
-// })
 
 function helper2(sub) {
   return new Promise(async (res, rej) => {
@@ -310,7 +287,11 @@ function helper2(sub) {
         $match: {
           $expr: {
             // $eq: ["$subId", sub._id],
-            $and: [{ $eq: ["$subId", sub._id] }, { $eq: ["$semId", sub.semId] },{ $lt: ["$ea", 21] }],
+            $and: [
+              { $eq: ["$subId", sub._id] },
+              { $eq: ["$semId", sub.semId] },
+              { $lt: ["$ea", 21] },
+            ],
           },
         },
       },
@@ -337,7 +318,10 @@ function helper2(sub) {
 
 router.get("/subfailure/:semId", async (req, res) => {
   try {
-    let _subID = await SubModel.find({semId:req.params.semId}, { _id: 1,semId:1 });
+    let _subID = await SubModel.find(
+      { semId: req.params.semId },
+      { _id: 1, semId: 1 }
+    );
     console.log(_subID);
     let Data = new Array();
     // for(let i=0; i<_subID.length; i++){
@@ -384,6 +368,66 @@ router.delete("/deleteSem", async (req, res) => {
     res.status(200).send("Done");
   } catch (e) {
     res.status(500).json({ message: e.message });
+  }
+});
+
+//get according to sem
+
+function helpergetSem(std) {
+  return new Promise(async (res, rej) => {
+    let markpersubObj = await MarksModel.aggregate([
+      {
+        $match: {
+          $expr: {
+            // $eq: ["$subId", sub._id],
+            $and: [{ $eq: ["$studentId", std._id] }, { $eq: ["$semId", std.semId] }],
+          },
+        },
+      },
+      // {
+      //   $lookup: {
+      //     from: "students",
+      //     localField: "studentId",
+      //     foreignField: "_id",
+      //     as: "Student",
+      //   },
+      // },
+      {
+        $lookup: {
+          from: "subjects",
+          localField: "subId",
+          foreignField: "_id",
+          as: "Subject",
+        },
+      },
+      {
+        "$unwind": "$Subject"
+      },
+      { $project: { "Subject.subject":1 } } 
+    ]);
+    obj = {
+      name:std.name,
+      size:markpersubObj
+    }
+    res(markpersubObj.length);
+  });
+}
+
+router.get("/Sem/:semId", async (req, res) => {
+  try {
+    let _student = await StudentModel.find({ semId: req.params.semId }).sort({ usn: 1});
+   
+    let Data = new Array();
+      _student.forEach((std) => {
+        Data.push(helpergetSem(std));
+      });
+      Promise.all(Data).then((val) => {
+        res.status(200).json(val);
+      });
+    
+    // res.status(200).json(_student);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

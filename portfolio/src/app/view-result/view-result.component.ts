@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Scale } from 'chart.js';
 import { lastValueFrom } from 'rxjs';
@@ -17,11 +16,6 @@ let data2:any[]=[];
 let datas2:any[]=[];
 
 
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { lastValueFrom } from 'rxjs';
-// import { ResultsService } from '../results.service';
 
 
 @Component({
