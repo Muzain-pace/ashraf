@@ -1,0 +1,44 @@
+<p>subtopper-component works!</p>
+  <table
+          class="table table-striped table-bordered table-sm mat-elevation-z8"
+        >
+          <thead>
+            <tr style="text-align: center">
+              <th scope="col">Name</th>
+              <th scope="col">USN</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Mark</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{SubjectTopperObj[0].Student.name}}
+            <tr *ngFor="let obj of SubjectTopperObj">
+              <td scope="row" style="font-size:18px ; font-family: 'Times New Roman', Times, serif; position: relative; width: 40%;">{{ obj.Student[0].name }}</td>
+              <td style="text-align: center">{{ obj.Student[0].usn }}</td>
+              <td style="text-align: center">{{ obj.Subject[0].subject }}</td>
+              <td style="text-align: center">{{ obj.totalMarksPerSubject}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <mat-paginator></mat-paginator> -->
+
+        <div class="tabClass1" *ngIf="!btnhidden">
+          <!-- <button mat-raised-button color="primary">View Graph</button> &nbsp; -->
+          <button
+            mat-raised-button
+            color="primary"
+            id="button"
+            (click)="openPDF('Subject Topper')"
+          >
+            Download
+          </button>
+        </div>
+        <p-chart
+          type="bar"
+          [data]="datas22"
+          width="100%"
+          [options]="options"
+          height="100vh"
+
+        ></p-chart>

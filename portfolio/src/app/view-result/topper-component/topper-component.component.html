@@ -1,0 +1,40 @@
+<table
+          class="table table-striped table-bordered table-sm mat-elevation-z8"
+        >
+          <thead>
+            <tr style="text-align: center">
+              <th scope="col">Name</th>
+              <th scope="col">USN</th>
+              <th scope="col">TotalMarks</th>
+              <th scope="col">Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let obj of TopperObj">
+              <td scope="row" style="font-size:18px ; font-family: 'Times New Roman', Times, serif; position: relative; width: 40%;">{{ obj.name }}</td>
+              <td style="text-align: center">{{ obj.usn }}</td>
+              <td style="text-align: center">{{ obj.totalmarks }}</td>
+              <td style="text-align: center;color: green;" >{{ obj.percentage }}%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <mat-paginator></mat-paginator> -->
+
+        <div class="tabClass1" *ngIf="!btnhidden">
+          <!-- <button mat-raised-button color="primary">View Graph</button> &nbsp; -->
+          <button
+            mat-raised-button
+            color="primary"
+            id="button"
+            (click)="openPDF('Topper')">
+            Download
+          </button>
+        </div>
+        <p-chart
+          type="bar"
+          [data]="datas11"
+          width="100%"
+          [options]="options"
+          height="100vh"
+        ></p-chart>

@@ -1,4 +1,4 @@
-<div id="table1">
+<div id="table1" *ngIf="!loader">
   <div class="tabClass">
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Toppers">
@@ -15,10 +15,22 @@
           </thead>
           <tbody>
             <tr *ngFor="let obj of TopperObj">
-              <td scope="row" style="font-size:18px ; font-family: 'Times New Roman', Times, serif; position: relative; width: 40%;">{{ obj.name }}</td>
+              <td
+                scope="row"
+                style="
+                  font-size: 18px;
+                  font-family: 'Times New Roman', Times, serif;
+                  position: relative;
+                  width: 40%;
+                "
+              >
+                {{ obj.name }}
+              </td>
               <td style="text-align: center">{{ obj.usn }}</td>
               <td style="text-align: center">{{ obj.totalmarks }}</td>
-              <td style="text-align: center;color: green;" >{{ obj.percentage }}%</td>
+              <td style="text-align: center; color: green">
+                {{ obj.percentage }}%
+              </td>
             </tr>
           </tbody>
         </table>
@@ -31,7 +43,8 @@
             mat-raised-button
             color="primary"
             id="button"
-            (click)="openPDF('Topper')">
+            (click)="openPDF('Topper')"
+          >
             Download
           </button>
         </div>
@@ -44,11 +57,6 @@
         ></p-chart>
         &nbsp;
       </mat-tab>
-
-
-
-
-
 
       <mat-tab label="Subject Toppers">
         <table
@@ -64,10 +72,20 @@
           </thead>
           <tbody>
             <tr *ngFor="let obj of SubjectTopperObj">
-              <td scope="row" style="font-size:18px ; font-family: 'Times New Roman', Times, serif; position: relative; width: 40%;">{{ obj.Student[0].name }}</td>
-              <td style="text-align: center">{{ obj.Student[0].usn }}</td>
+              <td
+                scope="row"
+                style="
+                  font-size: 18px;
+                  font-family: 'Times New Roman', Times, serif;
+                  position: relative;
+                  width: 40%;
+                "
+              >
+                {{ obj.Student.name }}
+              </td>
+              <td style="text-align: center">{{ obj.Student.usn }}</td>
               <td style="text-align: center">{{ obj.Subject[0].subject }}</td>
-              <td style="text-align: center">{{ obj.totalMarksPerSubject}}</td>
+              <td style="text-align: center">{{ obj.totalMarksPerSubject }}</td>
             </tr>
           </tbody>
         </table>
@@ -91,48 +109,50 @@
           width="100%"
           [options]="options"
           height="100vh"
-
         ></p-chart>
         &nbsp;
       </mat-tab>
 
-
-
-
-
-
       <mat-tab label="Fails">
         <table
-        class="table table-bordered table-sm mat-elevation-z8"
-        style="table-layout: auto;">
-        <thead>
-          <tr style="text-align: center; position: relative;" >
-            <th scope="col" *ngFor="let obj of SubjectFailObj" style="font-size:15px ;">{{obj[0].Subject[0].subject}}-{{obj[0].Subject[0].subcode}} </th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          <tr>
-            <td  *ngFor="let sub of SubjectFailObj"><div  *ngFor="let std of sub">{{std.Student[0].name}}</div></td>
-          </tr>
-      
-        </tbody>
-      </table>
-
-      <!-- <mat-paginator></mat-paginator> -->
-
-      <div class="tabClass1" *ngIf="!btnhidden">
-        <!-- <button mat-raised-button color="primary">View Graph</button> &nbsp; -->
-        <button
-          mat-raised-button
-          color="primary"
-          id="button"
-          (click)="openPDF('Fails')"
+          class="table table-bordered table-sm mat-elevation-z8"
+          style="table-layout: auto"
         >
-          Download
-        </button>
-      </div>
-      <!-- <p-chart
+          <thead>
+            <tr style="text-align: center; position: relative">
+              <th
+                scope="col"
+                *ngFor="let obj of SubjectFailObj"
+                style="font-size: 15px"
+              >
+                {{ obj[0].Subject[0].subject }}-{{ obj[0].Subject[0].subcode }}
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td *ngFor="let sub of SubjectFailObj">
+                <div *ngFor="let std of sub">{{ std.Student[0].name }}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <mat-paginator></mat-paginator> -->
+
+        <div class="tabClass1" *ngIf="!btnhidden">
+          <!-- <button mat-raised-button color="primary">View Graph</button> &nbsp; -->
+          <button
+            mat-raised-button
+            color="primary"
+            id="button"
+            (click)="openPDF('Fails')"
+          >
+            Download
+          </button>
+        </div>
+        <!-- <p-chart
         type="bar"
         [data]="datas11"
         width="100%"
@@ -158,4 +178,51 @@
     crossorigin="anonymous"
   ></script>
   &nbsp;
+</div>
+
+<div *ngIf="loader" class="container my-5">
+  <div class="container" style="display: flex; justify-content: center">
+    <p-skeleton width="15em" height="2em" borderRadius="16px"></p-skeleton>
+    <p-skeleton width="15em" height="2em" borderRadius="16px"></p-skeleton>
+    <p-skeleton width="15em" height="2em" borderRadius="16px"></p-skeleton>
+
+  </div>
+  
+  <div class="container my-5" style="display: flex; justify-content: center; align-items: center;">
+    <div>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+    </div>
+    <div>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+    </div>
+    <div>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="15em" height="1em" borderRadius="16px"></p-skeleton>
+    </div>
+    <div>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+      <p-skeleton width="30em" height="1em" borderRadius="16px"></p-skeleton>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: center">
+    <p-skeleton width="5em" height="2em"></p-skeleton>
+  </div>
 </div>
