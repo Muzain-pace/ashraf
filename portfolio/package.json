@@ -28,6 +28,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
+    "ngx-typed-js": "^2.1.1",
     "pdfmake": "^0.2.5",
     "primeicons": "^5.0.0",
     "primeng": "^14.1.0",

@@ -71,6 +71,10 @@ export class ResultComponent implements OnInit {
     this.submitload = true;
 
     let file = event.files[0];
+    console.log('size', file.size);
+    console.log('type', file.type);
+
+
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
 
@@ -229,7 +233,7 @@ AddSem(batch_id:any,sem:any){
     }
     if(flag==0)
     {
-      this.messageService.add({key:'duplicate',severity: 'error',summary: 'data not available',detail: 'cannot get the data'});
+      this.messageService.add({key:'duplicate',severity: 'warn',summary: 'data not available ',detail: 'kindly upload the xcel file'});
       // let semobj = {
       //   "sem": sem,
       //   "batchId":batch_id

@@ -1,10 +1,22 @@
 
   
-<body>
-    <div class="heading">
-        
+<div class="body">
+    <div class="heading" >
+        <h1>Want to know</h1>
         <ngx-typed-js [strings]="['Overall Toppers', 'Toppers', 'Fails']" [loop]="true" [typeSpeed]="40" [startDelay]="1000" [shuffle]="true"  [backSpeed]="100">
-             <h1>Want to know <span class="typing"></span>?</h1>
+              <h2><span class="typing"></span>?</h2>
           </ngx-typed-js>
+        <div class="clickbtn">
+            <button pButton type="button" class="p-button-success my-5" label="Click" pRipple routerLink="/result" routerLinkActive="active"></button>
+            <!-- <button pButton type="button" label="Success" class="p-button-success"></button>
+            <button type="button" class="btn btn-success">Success</button> -->
+
+        </div>
     </div>
-</body>
+
+    <div class ="assets">
+        <img src="../../assets/images/g.svg" alt="" srcset="">
+    </div>
+</div>
+
+
