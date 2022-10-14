@@ -92,6 +92,7 @@ export class ViewResultComponent implements OnInit {
       data2.push(this.SubjectTopperObj[i].totalMarksPerSubject);
     });
     labels2 = labels2.filter(onlyUnique);
+    console.log(labels2);
 
 
     this.datas11 = {
