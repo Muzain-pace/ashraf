@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const semschema = new mongoose.Schema({
+const batchschema = new mongoose.Schema({
   batch: {
     required: true,
     type: Number,
   },
 });
 
-module.exports = mongoose.model("Batch", semschema);
+module.exports = mongoose.model("Batch", batchschema);

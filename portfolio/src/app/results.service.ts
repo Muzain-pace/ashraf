@@ -16,7 +16,7 @@ export class ResultsService {
   postBatch(newData: any) {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
-    return this.http.post<any>('http://localhost:3000/api/batch', newData, {
+    return this.http.post<any>('https://vtu-result.glitch.me/api/batch', newData, {
       headers: this.headers,
     });
   }
@@ -24,25 +24,25 @@ export class ResultsService {
   getBatch(batch: any): Observable<Batch[]> {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
-    return this.http.get<any>('http://localhost:3000/api/getbatch/' + batch);
+    return this.http.get<any>('https://vtu-result.glitch.me/api/getbatch/' + batch);
   }
 
   postSem(newData: any) {
      this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
-    return this.http.post<any>('http://localhost:3000/api/sem', newData, {
+    return this.http.post<any>('https://vtu-result.glitch.me/api/sem', newData, {
       headers: this.headers,
     });
   }
   //get available sem
   getSem(sem: any): Observable<Sem[]> {
-    return this.http.get<any>('http://localhost:3000/api/getSem/' + sem);
+    return this.http.get<any>('https://vtu-result.glitch.me/api/getSem/' + sem);
   }
 
   postSub(newData: any) {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
-    return this.http.post<any>('http://localhost:3000/api/sub', newData, {
+    return this.http.post<any>('https://vtu-result.glitch.me/api/sub', newData, {
       headers: this.headers,
     });
   }
@@ -50,36 +50,36 @@ export class ResultsService {
   postStudent(newData: any) {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
-    return this.http.post<any>('http://localhost:3000/api/student', newData, {
+    return this.http.post<any>('https://vtu-result.glitch.me/api/student', newData, {
       headers: this.headers,
     });
   }
   postMarks(newData: any) {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
-    return this.http.post<any>('http://localhost:3000/api/marks', newData, {
+    return this.http.post<any>('https://vtu-result.glitch.me/api/marks', newData, {
       headers: this.headers,
     });
   }
 
   getSub(): Observable<Sub[]> {
-    return this.http.get<any>('http://localhost:3000/api/Subjectdetails');
+    return this.http.get<any>('https://vtu-result.glitch.me/api/Subjectdetails');
   }
 
   //get student wise topper
   getTopper(semId: any): Observable<any[]> {
     return this.http.get<any>(
-      'http://localhost:3000/api/getStudentTopper/' + semId
+      'https://vtu-result.glitch.me/api/getStudentTopper/' + semId
     );
   }
   //get subject wise topper
   getSubTopper(semId: any): Observable<any[]> {
     return this.http.get<any>(
-      'http://localhost:3000/api/getSubTopper/' + semId
+      'https://vtu-result.glitch.me/api/getSubTopper/' + semId
     );
   }
   //get subject wise faile students
   getSubFail(semId:any): Observable<any[]> {
-    return this.http.get<any>('http://localhost:3000/api/subfailure/'+semId);
+    return this.http.get<any>('https://vtu-result.glitch.me/api/subfailure/'+semId);
   }
 }
