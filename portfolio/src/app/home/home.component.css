@@ -21,8 +21,7 @@
 }
 .heading {
   text-align: center;
-  /* z-index: 1; */
-  /* width: 30em; */
+ 
 }
 .clickbtn button{ 
   padding: 1em 2em;
@@ -124,6 +123,10 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  transition: transform .5s;
+}
+.timeline-content:hover{
+  transform: scale(1.1); 
 }
 .timeline-row .timeline-content:after {
   content: "";

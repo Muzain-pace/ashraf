@@ -56,7 +56,8 @@ export class ViewResultComponent implements OnInit {
   }
   TopperObj: any = [];
   SubjectTopperObj: any;
-  SubjectFailObj: any;
+  SubjectFailObj: any = [];
+  Failedsubject:any[] = [];
 
   loader=true;
   async ngOnInit() {
@@ -69,13 +70,21 @@ export class ViewResultComponent implements OnInit {
     this.SubjectFailObj = await lastValueFrom(
       this.ResultsService.getSubFail(semId)
     );
+    for(let i=0; i<this.SubjectFailObj.length; i++){
+      if(this.SubjectFailObj[i].length > 0) this.Failedsubject.push(this.SubjectFailObj[i][0].Subject[0].subject);
+    }
+    
+    console.log(this.Failedsubject)
+    
     // for Toppers
 
     this.TopperObj.forEach((e: any, i: string | number) => {
       labels1.push(this.TopperObj[i].usn);
       data1.push(this.TopperObj[i].totalmarks);
-      datas1.push(this.TopperObj[i].percentage);
-      console.log(this.TopperObj[i].usn );
+      let percentage = parseFloat(this.TopperObj[i].percentage).toFixed(2);
+      console.log(percentage);
+      datas1.push(percentage);
+      console.log(this.TopperObj[i].usn);
     });
     console.log(this.TopperObj);
 

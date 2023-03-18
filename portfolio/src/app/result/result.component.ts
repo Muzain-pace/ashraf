@@ -152,7 +152,7 @@ export class ResultComponent implements OnInit {
     return new Promise((res) => {
       let parr = new Array();
       uploadedData.forEach(async (_data: any, j: any) => {
-        let percent = Number(uploadedData[j]['Percentage']);
+        let percent = Number(uploadedData[j]['Percentage']).toFixed(2);
         let stdobj = {
           semId: semId,
           name: uploadedData[j]['NAME'],
